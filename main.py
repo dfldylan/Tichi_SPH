@@ -1,8 +1,11 @@
 import numpy
+import pandas
+
 from sph import *
 import json
 import time
-from sample_csv import save_csv, save_scene_config
+from sample_csv import save_csv, save_scene_config,make_save_dir
+import pdb
 
 
 """ init data structure """
@@ -260,6 +263,9 @@ def sph_step():
 init_scenario()
 # write_scene_data()
 
+globalvar.op_system_run = is_auto_start
+globalvar.op_write_csv = is_save_csv
+
 
 def show_options():
     # run info
@@ -348,6 +354,7 @@ def run_step():
     while globalvar.time_count < globalvar.time_counter / config.gui_fps[None]:
         if globalvar.is_first_time:
             if globalvar.op_write_csv:
+                make_save_dir(save_csv_id)
                 save_scene_config(config_file, scenario_file)
             globalvar.time_start = time.time()
             globalvar.is_first_time = False
@@ -430,6 +437,15 @@ else:
         run_step()
         if globalvar.op_write_file:
             write_files()
+        if is_auto_stop:
+            vel_matrix = fluid.vel.to_numpy()[:fluid.part_num[None]]
+            if np.any(np.isnan(vel_matrix)):
+                break
+            # vel_matrix[np.isnan(vel_matrix)] = 0
+            max_vel = numpy.max(vel_matrix)
+            print(max_vel)
+            if max_vel < 0.4:
+                break
 
 
 
