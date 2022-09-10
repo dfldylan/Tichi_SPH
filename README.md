@@ -3,7 +3,7 @@
 ## Requirements
 
 * Python 3.7 or higher
-* taichi 0.8.5 +
+* taichi 1.0.4 +
 * Vulkan https://vulkan.lunarg.com/sdk/home
 * numpy 
 * plyfile
