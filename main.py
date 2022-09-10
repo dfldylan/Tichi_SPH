@@ -2,6 +2,7 @@ import numpy
 from sph import *
 import json
 import time
+from sample_csv import save_csv, save_scene_config
 
 
 """ init data structure """
@@ -282,6 +283,7 @@ def show_options():
         window.GUI.text("b: display boundary")
         window.GUI.text("r: run system")
         window.GUI.text("f: write file")
+        window.GUI.text("z: write csv")
         window.GUI.end()
 
     if window.get_event(ti.ui.PRESS):
@@ -293,6 +295,10 @@ def show_options():
         if window.event.key == 'f':
             globalvar.op_write_file = not globalvar.op_write_file
             print("write file:", globalvar.op_write_file)
+
+        if window.event.key == 'z':
+            globalvar.op_write_csv = not globalvar.op_write_csv
+            print("write csv:", globalvar.op_write_csv)
 
         if window.event.key == 'b':
             globalvar.show_bound = not globalvar.show_bound
@@ -341,6 +347,8 @@ def run_step():
 
     while globalvar.time_count < globalvar.time_counter / config.gui_fps[None]:
         if globalvar.is_first_time:
+            if globalvar.op_write_csv:
+                save_scene_config(config_file, scenario_file)
             globalvar.time_start = time.time()
             globalvar.is_first_time = False
         """ computation loop """
@@ -362,6 +370,9 @@ def run_step():
     # globalvar.time_count += config.dt[None]
     # sph_step()
     globalvar.time_real = time.time() - globalvar.time_start
+    if globalvar.op_write_csv:
+        save_csv(globalvar.time_counter, fluid, bound)
+
     print('current time: ', globalvar.time_count)
     print('---------------------real time------------------------', globalvar.time_real)
     print('time step: ', config.dt[None])

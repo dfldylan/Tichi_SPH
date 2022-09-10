@@ -366,3 +366,4 @@ class GlobalVariable:
         self.show_run_info = True
         self.op_system_run = False
         self.op_write_file = False
+        self.op_write_csv = False
