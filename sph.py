@@ -2,7 +2,7 @@ from os import system
 import numpy as np
 import time
 
-from taichi.lang.ops import atomic_min
+from taichi.lang.ops import atomic_min,atomic_max
 from sph_obj import *
 
 
@@ -45,6 +45,7 @@ def cfl_condition(obj: ti.template()):
         v_norm = obj.vel[i].norm()
         if v_norm > 1e-4:
             atomic_min(config.dt[None], config.part_size[1] / v_norm * config.cfl_factor[None])
+            atomic_max(config.dt[None], 1e-6)
 
 
 @ti.kernel

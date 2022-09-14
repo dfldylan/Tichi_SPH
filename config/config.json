@@ -1,7 +1,7 @@
 {
 
     "arch": "gpu",
-    "device_memory_GB":6,
+    "device_memory_GB":10,
 
     "solver_type":"VFSPH",
     "solver_wc_gamma":7,
@@ -23,13 +23,12 @@
 
     "gui_res":[1080,1080],
     "gui_part_zoomer": 1.0,
-    "gui_fps":30,
+    "gui_fps":250,
     "gui_canvas_bgcolor": [0.2, 0.2, 0.6],
     "gui_camera_pos": [6.0, 1.0, 0.0],
     "gui_camera_lookat": [0.0, 0.0, 0.0],
 
-    "auto_start":true,
+    "auto_start":false,
     "auto_stop":false,
-    "save_csv":true,
-    "save_csv_id":-1
+    "save_csv_folder":"./temp"
 }
