@@ -4,20 +4,15 @@ import pandas as pd
 import numpy as np
 import os
 
-SAMPLE_FOLDER = r'Z:\dufeilong\datasets\new'
-SCENE_ID = 0
-SAVE_FOLDER = os.path.join(SAMPLE_FOLDER, str(SCENE_ID))
-
+SAVE_FOLDER = None
 TABLE_TITLE = ['pos0', 'pos1', 'pos2', 'vel0', 'vel1', 'vel2', 'mass']
 
-def make_save_dir(id):
-    global SCENE_ID
+def make_save_dir(save_csv_folder):
     global SAVE_FOLDER
-    SCENE_ID = id
-    SAVE_FOLDER = os.path.join(SAMPLE_FOLDER, str(SCENE_ID))
-    if os.path.exists(SAVE_FOLDER):
-        print('SAVE_FOLDER exists!')
-    os.makedirs(SAVE_FOLDER, exist_ok=True)
+    SAVE_FOLDER = save_csv_folder
+    if os.path.exists(save_csv_folder):
+        print('save_csv_folder exists!')
+    os.makedirs(save_csv_folder, exist_ok=True)
 
 
 def save_csv(fps, fluid, solid):

@@ -77,8 +77,7 @@ else:
 #run param
 is_auto_start = read_param(config_buffer.get('auto_start'),'auto_start')
 is_auto_stop = read_param(config_buffer.get('auto_stop'),'auto_stop')
-is_save_csv = read_param(config_buffer.get('save_csv'),'save_csv')
-save_csv_id = int(read_param(config_buffer.get('save_csv_id'),'save_csv_id'))
+save_csv_folder = read_param(config_buffer.get('save_csv_folder'),'save_csv_folder')
 
 sim_dim = read_param(scenario_buffer['sim_env']['sim_dim'], 'sim_dim')  # simulation dimensions
 phase_num = read_param(scenario_buffer['sim_env']['phase_num'], 'phase_num')  # number of phases

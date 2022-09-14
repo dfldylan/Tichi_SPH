@@ -1,3 +1,7 @@
+import os
+
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+
 import numpy
 import pandas
 
@@ -264,7 +268,7 @@ init_scenario()
 # write_scene_data()
 
 globalvar.op_system_run = is_auto_start
-globalvar.op_write_csv = is_save_csv
+globalvar.op_write_csv = bool(save_csv_folder)
 
 
 def show_options():
@@ -354,7 +358,7 @@ def run_step():
     while globalvar.time_count < globalvar.time_counter / config.gui_fps[None]:
         if globalvar.is_first_time:
             if globalvar.op_write_csv:
-                make_save_dir(save_csv_id)
+                make_save_dir(save_csv_folder)
                 save_scene_config(config_file, scenario_file)
             globalvar.time_start = time.time()
             globalvar.is_first_time = False
@@ -431,21 +435,22 @@ if globalvar.show_window:
             if globalvar.op_system_run and globalvar.op_write_file:
                 write_files()
             window.show()
+            if globalvar.op_system_run and is_auto_stop:
+                vel_matrix = fluid.vel.to_numpy()[:fluid.part_num[None]]
+                if np.any(np.isnan(vel_matrix)):
+                    break
+                # vel_matrix[np.isnan(vel_matrix)] = 0
+                max_vel = numpy.max(numpy.abs(vel_matrix))
+                print(max_vel)
+                if globalvar.time_count > 1 and max_vel < 1.35:
+                    break
+
 
 else:
     while globalvar.time_count < 60:
         run_step()
         if globalvar.op_write_file:
             write_files()
-        if is_auto_stop:
-            vel_matrix = fluid.vel.to_numpy()[:fluid.part_num[None]]
-            if np.any(np.isnan(vel_matrix)):
-                break
-            # vel_matrix[np.isnan(vel_matrix)] = 0
-            max_vel = numpy.max(vel_matrix)
-            print(max_vel)
-            if max_vel < 0.4:
-                break
 
 
 
